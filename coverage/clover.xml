@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1750757163744" clover="3.2.0">
+  <project timestamp="1750757163744" name="All files">
+    <metrics statements="31" coveredstatements="31" conditionals="20" coveredconditionals="20" methods="10" coveredmethods="10" elements="61" coveredelements="61" complexity="0" loc="31" ncloc="31" packages="1" files="1" classes="1"/>
+    <file name="clientService.js" path="C:\Users\EVICTOR\Desktop\Travail\Qualité logiciel et tests\nodeProject\src\clientService.js">
+      <metrics statements="31" coveredstatements="31" conditionals="20" coveredconditionals="20" methods="10" coveredmethods="10"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="5" count="15" type="cond" truecount="2" falsecount="0"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="9" count="14" type="cond" truecount="2" falsecount="0"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="13" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="17" count="12" type="cond" truecount="2" falsecount="0"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="21" count="11" type="cond" truecount="4" falsecount="0"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="25" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="1" type="stmt"/>
+      <line num="29" count="9" type="stmt"/>
+      <line num="30" count="9" type="stmt"/>
+      <line num="31" count="9" type="stmt"/>
+      <line num="35" count="2" type="stmt"/>
+      <line num="39" count="3" type="stmt"/>
+      <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="44" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="45" count="1" type="stmt"/>
+      <line num="48" count="1" type="stmt"/>
+      <line num="49" count="1" type="stmt"/>
+      <line num="53" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="54" count="1" type="stmt"/>
+      <line num="56" count="1" type="stmt"/>
+      <line num="57" count="1" type="stmt"/>
+      <line num="58" count="1" type="stmt"/>
+      <line num="62" count="14" type="stmt"/>
+      <line num="65" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
