@@ -41,6 +41,7 @@ jobs:
 
       - name: Run tests
         run: |
+          cd backend
           npm test
 
       - name: Run Cypress e2e tests
