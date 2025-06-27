@@ -84,11 +84,6 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-      - name: Add Heroku remote
-        run: |
-          git remote remove heroku || true
-          git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-
       - name: Set up Heroku authentication
         run: |
           echo "machine git.heroku.com\n  login $HEROKU_EMAIL\n  password $HEROKU_API_KEY" > ~/.netrc
@@ -99,7 +94,8 @@ jobs:
 
       - name: Deploy to Heroku
         run: |
-          git push heroku HEAD:master -f
+          heroku git:remote -a $HEROKU_APP_NAME
+          git push heroku HEAD:main -f
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
