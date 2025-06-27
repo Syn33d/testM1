@@ -53,6 +53,13 @@ jobs:
         env:
           PORT: 3001
 
+      - name: Start frontend server
+        run: |
+          cd frontend
+          npm start &
+        env:
+          PORT: 3000
+
       - name: Run Cypress e2e tests
         run: |
           cd frontend
