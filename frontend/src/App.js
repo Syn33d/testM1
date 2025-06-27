@@ -3,122 +3,115 @@ import React, { useState, useEffect } from "react";
 const API_URL = "http://localhost:3001";
 
 function App() {
-  const [token, setToken] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  // Conversion
+  const [amount, setAmount] = useState(1);
+  const [from, setFrom] = useState("EUR");
+  const [to, setTo] = useState("USD");
+  const [conversionResult, setConversionResult] = useState(null);
 
-  const login = async (e) => {
+  // TTC
+  const [ht, setHt] = useState(100);
+  const [tva, setTva] = useState(20);
+  const [ttcResult, setTtcResult] = useState(null);
+
+  // Remise
+  const [prix, setPrix] = useState(100);
+  const [remise, setRemise] = useState(10);
+  const [remiseResult, setRemiseResult] = useState(null);
+  const [prixInitial] = useState(prix);
+  const [pourcentage] = useState(remise);
+
+  const handleConvert = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setToken(data.token);
-      } else {
-        alert("Login failed");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error during login");
-    }
+    const res = await fetch(`${API_URL}/convert?amount=${amount}&from=${from}&to=${to}`);
+    const data = await res.json();
+    setConversionResult(data ||data.error);
   };
 
-  const fetchTasks = async () => {
-    const res = await fetch(`${API_URL}/tasks`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setTasks(data);
-    } else {
-      alert("Failed to fetch tasks");
-    }
-  };
-
-  const addTask = async (e) => {
+  const handleTtc = async (e) => {
     e.preventDefault();
-    if (!newTaskTitle.trim()) return;
-    const res = await fetch(`${API_URL}/tasks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title: newTaskTitle }),
-    });
-    if (res.ok) {
-      const task = await res.json();
-      setTasks([...tasks, task]);
-      setNewTaskTitle("");
-    } else {
-      alert("Failed to add task");
-    }
+    const res = await fetch(`${API_URL}/tva?ht=${ht}&tva=${tva}`);
+    const data = await res.json();
+    setTtcResult(data.ttc || data.error);
   };
 
-  const deleteTask = async (id) => {
-    const res = await fetch(`${API_URL}/tasks/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.ok) {
-      setTasks(tasks.filter((t) => t.id !== id));
-    } else {
-      alert("Failed to delete task");
-    }
+  const handleRemise = async (e) => {
+    e.preventDefault();
+    const res = await fetch(`${API_URL}/remise?prix=${prix}&remise=${remise}`);
+    const data = await res.json();
+    setRemiseResult(data.prixFinal || data.error);
   };
-
-  useEffect(() => {
-    if (token) {
-      fetchTasks();
-    }
-  }, [token]);
-
-  if (!token) {
-    return (
-      <div>
-        <h2>Login</h2>
-        <form onSubmit={login}>
-          <input
-            placeholder='Username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            placeholder='Password'
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type='submit'>Login</button>
-        </form>
-      </div>
-    );
-  }
 
   return (
-    <div>
-      <h2>Tasks</h2>
-      <ul>
-        {tasks.map((t) => (
-          <li key={t.id}>
-            {t.title} <button onClick={() => deleteTask(t.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <form onSubmit={addTask}>
-        <input
-          placeholder='New task'
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-        />
-        <button type='submit'>Add Task</button>
-      </form>
+    <div style={{ maxWidth: 500, margin: "2rem auto", fontFamily: "sans-serif" }}>
+      <h2>Test API Conversion</h2>
+
+      {/* Bloc Conversion */}
+      <div style={{ border: "1px solid #ccc", padding: 16, marginBottom: 24 }}>
+        <h3>Conversion de devise</h3>
+        <form onSubmit={handleConvert}>
+          <input type="number" value={amount} onChange={e => setAmount(e.target.value)} step="any" min="0" data-cy="conversion"/>
+          <select value={from} onChange={e => setFrom(e.target.value)} data-cy="from">
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+          </select>
+          <span>→</span>
+          <select value={to} onChange={e => setTo(e.target.value)} data-cy="to">
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+          </select>
+          <button type="submit">Convertir</button>
+        </form>
+        {conversionResult && !conversionResult.error && (
+          <div>
+            <div data-cy="conversionResult">Résultat : <b>{conversionResult.convertedAmount}</b></div>
+            <div>
+              {conversionResult.originalAmount} {conversionResult.from} → {conversionResult.to}
+            </div>
+          </div>
+        )}
+        {conversionResult && conversionResult.error && (
+          <div style={{ color: "red" }}>{conversionResult.error}</div>
+        )}
+      </div>
+
+      {/* Bloc TTC */}
+      <div style={{ border: "1px solid #ccc", padding: 16, marginBottom: 24 }}>
+        <h3>Calcul TTC</h3>
+        <form onSubmit={handleTtc}>
+          <input type="number" value={ht} onChange={e => setHt(e.target.value)} placeholder="HT" data-cy="ht"/>
+          <input type="number" value={tva} onChange={e => setTva(e.target.value)} placeholder="TVA (%)" data-cy="tva"/>
+          <button type="submit">Calculer TTC</button>
+        </form>
+        {ttcResult && !ttcResult.error && (
+          <div>
+            <div data-cy="ttcResult">Montant TTC : <b>{ttcResult}</b></div>
+            <div data-cy="calculValues">HT : {ht}, TVA : {tva}%</div>
+          </div>
+        )}
+        {ttcResult && ttcResult.error && (
+          <div style={{ color: "red" }}>{ttcResult.error}</div>
+        )}
+      </div>
+
+      {/* Bloc Remise */}
+      <div style={{ border: "1px solid #ccc", padding: 16 }}>
+        <h3>Application Remise</h3>
+        <form onSubmit={handleRemise}>
+          <input type="number" value={prix} onChange={e => setPrix(e.target.value)} placeholder="Prix" data-cy="prix"/>
+          <input type="number" value={remise} onChange={e => setRemise(e.target.value)} placeholder="Remise (%)" data-cy="remise"/>
+          <button type="submit">Appliquer Remise</button>
+        </form>
+        {remiseResult && !remiseResult.error && (
+          <div>
+            <div data-cy="remiseResult">Prix après remise : <b>{remiseResult}</b></div>
+            <div data-cy="remiseValues">Prix initial : {prixInitial}, Remise : {pourcentage}%</div>
+          </div>
+        )}
+        {remiseResult && remiseResult.error && (
+          <div style={{ color: "red" }}>{remiseResult.error}</div>
+        )}
+        </div>
     </div>
   );
 }

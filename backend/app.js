@@ -73,7 +73,7 @@ app.get('/convert', (req, res) => {
     if (isNaN(amountNum)) return res.status(400).json({ error: 'amount must be a number' });
     try {
         const converted = convert(amountNum, from, to);
-        res.json({ from, to, originalAmount: amountNum, convertedAmount: converted });
+        res.json( converted );
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
@@ -84,7 +84,7 @@ app.get('/tva', (req, res) => {
     const htNum = parseFloat(ht);
     const tvaNum = parseFloat(tva);
     if (isNaN(htNum) || isNaN(tvaNum)) return res.status(400).json({ error: 'ht and tva must be numbers' });
-    res.json({ ht: htNum, taux: tvaNum, ttc: calculTTC(htNum, tvaNum) });
+    res.json( calculTTC(htNum, tvaNum) );
 });
 
 app.get('/remise', (req, res) => {
@@ -92,7 +92,7 @@ app.get('/remise', (req, res) => {
     const prixNum = parseFloat(prix);
     const remiseNum = parseFloat(remise);
     if (isNaN(prixNum) || isNaN(remiseNum)) return res.status(400).json({ error: 'prix and remise must be numbers' });
-    res.json({ prixInitial: prixNum, pourcentage: remiseNum, prixFinal: applyRemise(prixNum, remiseNum) });
+    res.json( applyRemise(prixNum, remiseNum) );
 });
 
 
