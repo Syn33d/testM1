@@ -80,19 +80,19 @@ app.get('/convert', (req, res) => {
 });
 
 app.get('/tva', (req, res) => {
-    const { ht, tva } = req.query;
+    const { ht, taux } = req.query;
     const htNum = parseFloat(ht);
-    const tvaNum = parseFloat(tva);
-    if (isNaN(htNum) || isNaN(tvaNum)) return res.status(400).json({ error: 'ht and tva must be numbers' });
-    res.json( calculTTC(htNum, tvaNum) );
+    const tauxNum = parseFloat(taux);
+    if (isNaN(htNum) || isNaN(tauxNum)) return res.status(400).json({ error: 'ht and taux must be numbers' });
+    res.json( calculTTC(htNum, tauxNum) );
 });
 
 app.get('/remise', (req, res) => {
-    const { prix, remise } = req.query;
+    const { prix, pourcentage } = req.query;
     const prixNum = parseFloat(prix);
-    const remiseNum = parseFloat(remise);
-    if (isNaN(prixNum) || isNaN(remiseNum)) return res.status(400).json({ error: 'prix and remise must be numbers' });
-    res.json( applyRemise(prixNum, remiseNum) );
+    const pourcentageNum = parseFloat(pourcentage);
+    if (isNaN(prixNum) || isNaN(pourcentageNum)) return res.status(400).json({ error: 'prix and pourcentage must be numbers' });
+    res.json( applyRemise(prixNum, pourcentageNum) );
 });
 
 
