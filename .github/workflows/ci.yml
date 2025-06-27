@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install root dependencies
+        run: npm install
+
       - name: Install backend dependencies
         run: |
           cd backend
@@ -41,7 +44,6 @@ jobs:
 
       - name: Run tests
         run: |
-          cd backend
           npm test
 
       - name: Run Cypress e2e tests
@@ -51,5 +53,4 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          cd backend
           npm run coverage
