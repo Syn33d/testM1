@@ -39,14 +39,8 @@ jobs:
           cd frontend
           npm install
 
-      - name: Run backend tests (Jest)
+      - name: Run tests
         run: |
-          cd backend
-          npm test
-
-      - name: Run frontend tests (Jest)
-        run: |
-          cd frontend
           npm test
 
       - name: Run Cypress e2e tests
