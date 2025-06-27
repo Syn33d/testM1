@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "start": "node backend/app.js"
   },
   "keywords": [],
   "author": "",
